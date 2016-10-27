@@ -1,27 +1,69 @@
 package application;
 
+
 public class BoardModel {
 	
-	private Chip[][] boardArray; 
-	private int winningMove; 
+	//fields
+	private Integer size;
+	private Integer winningMove;
+	Chip[][] board;// each cell of the board is a Chip
 	
-	public BoardModel(int size, int winningMove)
-	{
-		boardArray = new Chip[size][size]; //no need for setters because it will break encapsulation
-		this.winningMove = winningMove; 
+	/**
+	 * constructor - create a square board
+	 * @param size - rows and columns
+	 * @param winningMove 
+	 */
+	public BoardModel(Integer size, Integer winningMove){
+		this.size = size;
+		this.winningMove= winningMove;
+		this.board = new Chip[size][size];
+		System.out.println("boardmodel constructor");
+	}
+	/**
+	 * set size of the board
+	 * @param size - rows and columns
+	 */
+	public void setSize(Integer size) {
+		this.size = size;
+	}
+	/**
+	 * get the size
+	 * @return size
+	 */
+	public Integer getSize(){
+		return this.size;
+	}
+	/**
+	 * set winning move
+	 * @param winningMove
+	 */
+	public void setWinningMove(Integer winningMove) {
+		this.winningMove = winningMove;
+	}
+	/**
+	 * get winning move
+	 * @return winningMove
+	 */
+	public Integer getWinningMove() {
+		return this.winningMove;
+	}
+	/**
+	 * set board with rows and cols
+	 * @param size
+	 */
+	public void setBoard(Integer size) {
+		this.board = new Chip[size][size];
+	}
+	/**
+	 * get board
+	 * @return board
+	 */
+	public Chip[][] getBoard() {
+		return this.board;
 	}
 	
-	void putChip(Chip chip, int column)
-	{
-		//need to know what column to go on
+	
+	public void putChip(){
+		// fully implemetation here
 	}
-	
-	int checkWinner()
-	{
-		//TODO to go over the whole board after every move
-		return 0;
-	}
-	
-	
-
 }
