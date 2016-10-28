@@ -8,7 +8,7 @@ public class ConnectFour extends Application{
 	private static Integer[] arguments = new Integer[2];
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		//try{
+		try{
 			
 		//presenter = new BoardPresenter(Integer.parseInt(args[0].trim()), Integer.parseInt(args[1].trim()));
 		//System.out.println(Integer.parseInt(args[0].trim()));
@@ -16,11 +16,11 @@ public class ConnectFour extends Application{
 		arguments[1] = Integer.parseInt(args[1].trim());
 		launch(args);
 		//Application.launch(BoardGui.class,args);
-		//}
-		//catch (Exception e)
-		//{
+		}
+		catch (Exception e)
+		{
 			//System.out.println("Invalid argument type.");
-		//}
+		}
 		
 	}
 
