@@ -13,7 +13,7 @@ public class BoardModel {
 	
 	void putChip(Chip chip, int column)
 	{
-		//need to know what column to go on
+
 	}
 	
 	int checkWinner()

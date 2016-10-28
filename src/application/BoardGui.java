@@ -2,6 +2,8 @@ package application;
 
 
 
+//import com.sun.prism.paint.Color;
+
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -15,6 +17,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+
 import javafx.stage.Stage;
 
 
@@ -23,24 +28,16 @@ public class BoardGui extends Application{
 	private BoardPresenter presenter;
 	
 	
-	private GridPane grid = new GridPane();
+	private GridPane grid;
 	private Button player1Button;
 	private Button player2Button;
-	public BoardGui() {
-		System.out.println("board gui");
-		
-	}
 	
-	@Override
-	public void init() throws Exception {
-		System.out.println("init");
-		setPresenter(new BoardPresenter(Integer.parseInt(getParameters().getRaw().get(0).trim()), Integer.parseInt(getParameters().getRaw().get(1).trim())));
-		/**
-		 * initialize and create the grid
-		 * @param rows and cols of the grid
-		 */
+	public BoardGui(BoardPresenter presenter, int size) {
+		//System.out.println("board gui");
+		this.presenter = presenter; 
+		presenter.setView(this);
 		
-		
+		createGrid(size);
 	}
 	
 	public void setGridPane(GridPane grid) {
@@ -67,12 +64,6 @@ public class BoardGui extends Application{
 	public void setPlayer2Button(Button player2Button) {
 		this.player2Button = player2Button;
 	}
-	public GridPane createGrid(){
-		
-		setGridPane(presenter.createGrid(Integer.parseInt(getParameters().getRaw().get(0).trim())));
-        
-		return getGridPane();
-	}
 	
 	public VBox showRightBoxGUI(){
 		VBox rightBox = new VBox(10);
@@ -89,39 +80,84 @@ public class BoardGui extends Application{
 		rightBox.setAlignment(Pos.TOP_CENTER);
 		return rightBox;
 	}
+	
 	public void promptWinner(String playerId) {
 		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setHeaderText("Game Over!");
-		
-		
+		alert.setHeaderText("Game Over!");		
 		alert.setContentText(playerId + "won.");
-		
-		 alert.showAndWait();
-		
+		alert.showAndWait();	
 	}
 	
-	public void show(Stage primaryStage){
-		System.out.println("show");
+	public void promptTie()
+	{
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setHeaderText("Game Over!");		
+		alert.setContentText("It's a tie!");
+		alert.showAndWait();
+	}
+	
+	public void createGrid(int size){
 		
+		grid = new GridPane();
+		grid.getStyleClass().add("game-grid");
+		
+		//add colums on the grid using numberOfColumns
+        for(int i = 0; i < size; i++) {
+            ColumnConstraints column = new ColumnConstraints(50);
+            grid.getColumnConstraints().add(column);
+            
+        }
+        //add rows on the grid using numberOfRow
+        for(int i = 0; i < size; i++) {
+            RowConstraints row = new RowConstraints(50);
+            grid.getRowConstraints().add(row);
+        }
+     
+        
+     // add responsive cell onto the grid
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                Pane pane = new Pane();
+                int column= i;
+          
+                //when the cell is clicked, add a rectangle with chosen color onto the cell
+                pane.setOnMouseReleased(e -> {
+               	
+                 presenter.putChip(column);
+                    
+                });
+                
+                
+                pane.getStyleClass().add("game-grid-cell"); // associate each pane with css .game-grid-cell
+                if (i == 0) {
+                    pane.getStyleClass().add("first-column");
+                }
+                if (j == 0) {
+                    pane.getStyleClass().add("first-row");
+                }
+            	
+            	
+                //add cell to the grid
+                grid.add(pane, i, j);
+              
+            }
+        }
+	}
+	
+	@Override
+	public void start(Stage primaryStage) throws Exception {
 		
 		BorderPane root = new BorderPane();
-		
-		
-		root.setCenter(createGrid());
+
+		root.setCenter(grid);
 		root.setRight(showRightBoxGUI());
 		
 		Scene scene = new Scene(root, 700,700);
 		//link to the css file
-		scene.getStylesheets().add(this.getClass().getResource("/game.css").toExternalForm());
+		scene.getStylesheets().add(this.getClass().getResource("game.css").toExternalForm());
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Connect 4");
 		primaryStage.show();
-	}
-	@Override
-	public void start(Stage primaryStage) throws Exception {
-		System.out.println("start");
-		show(primaryStage);
-		
 	}
 
 	

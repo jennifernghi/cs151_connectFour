@@ -12,37 +12,17 @@ public class BoardPresenter {
 	BoardModel boardModel;
 	AbstractPlayer player1;
 	AbstractPlayer player2;
-	Chip chip;
-	Integer turn;
-	GridPane grid;
-	Integer[][] boardData;
-	public BoardPresenter() {
-		 
-		
-	}
+	Integer turn = 1;
+
 	public BoardPresenter(Integer size, Integer winningMove) {
-		
-		//attach view
-		setView(new BoardGui());
-		
-		
+				
 		setBoardModel(new BoardModel(size, winningMove));
-		
-		
+			
 		setPlayer1(new Players(1, new Chip(1, Color.GREEN)));
 		setPlayer2(new Players(2, new Chip(2, Color.RED)));
-		setBoardData(new Integer[size][size]);
-		for(int i = 0; i<size; i++){
-			for(int j=0; j<size; j++){
-				boardData[i][j]=0;
-			}
-		}
-		
-		System.out.println("presenter");
-		
 		
 	}
-	
+	//attach view
 	public void setView(BoardGui view) {
 		this.view = view;
 	}
@@ -72,13 +52,6 @@ public class BoardPresenter {
 	public AbstractPlayer getPlayer2() {
 		return this.player2;
 	}
-	public void setChip(Chip chip) {
-		this.chip = chip;
-	}
-	
-	public Chip getChip() {
-		return this.chip;
-	}
 	
 	public void setTurn(Integer turn) {
 		this.turn = turn;
@@ -87,61 +60,30 @@ public class BoardPresenter {
 	public Integer getTurn() {
 		return this.turn;
 	}
-	public void putChip() {
-		boardModel.putChip();
-	}
-	public void setBoardData(Integer[][] boardData) {
-		this.boardData = boardData;
-	}
-public GridPane createGrid(Integer size){
-		GridPane grid = new GridPane();
-		grid.getStyleClass().add("game-grid");
+	public void putChip(int column) {
+		//boardModel.putChip();
+		if(getTurn() ==1){
+			boardModel.putChip(player1.getChip(), column);
+		    setTurn(2);} 
+		else
+		{
+			boardModel.putChip(player2.getChip(), column);
+			setTurn(1); 
+		}
 		
-		//add colums on the grid using numberOfColumns
-        for(int i = 0; i < size; i++) {
-            ColumnConstraints column = new ColumnConstraints(50);
-            grid.getColumnConstraints().add(column);
-           
-            
-        }
-        //add rows on the grid using numberOfRow
-        for(int i = 0; i < size; i++) {
-            RowConstraints row = new RowConstraints(50);
-            grid.getRowConstraints().add(row);
-        }
-     
-        
-     // add responsive cell onto the grid
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-           	//create a pane on each cell
-                Pane pane = new Pane();
-                Label l = new Label(boardData[i][j].toString());
-          
-                //when the cell is clicked, add a rectangle with chosen color onto the cell
-                pane.setOnMouseReleased(e -> {
-               	
-                 //place chip here
-                    
-                });
-                
-                pane.getChildren().add(l);
-                pane.getStyleClass().add("game-grid-cell"); // associate each pane with css .game-grid-cell
-                if (i == 0) {
-                    pane.getStyleClass().add("first-column");
-                }
-                if (j == 0) {
-                    pane.getStyleClass().add("first-row");
-                }
-            	
-            	
-                //add cell to the grid
-                grid.add(pane, i, j);
-              
-            }
-        }
-        return grid;
+		int winner = boardModel.checkWinner();
+		
+		if (winner == 1)
+			view.promptWinner(""+player1.getPlayerId());
+		else if (winner ==2)
+			view.promptWinner(""+player2.getPlayerId());
+		else if (winner ==-1)
+			view.promptTie(); //when the board is filled
+			
+		System.out.println(column);
 	}
+
+
 	
 	
 
