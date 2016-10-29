@@ -6,6 +6,7 @@ package application;
 
 import javafx.application.Application;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -13,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.RowConstraints;
@@ -96,6 +98,14 @@ public class BoardGui extends Application{
 		alert.showAndWait();
 	}
 	
+	public void promptInvalidMove()
+	{
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setHeaderText("Invalid Move!");		
+		alert.setContentText("Try again!");
+		alert.showAndWait();
+	}
+	
 	public void createGrid(int size){
 		
 		grid = new GridPane();
@@ -124,6 +134,7 @@ public class BoardGui extends Application{
                 pane.setOnMouseReleased(e -> {
                	
                  presenter.putChip(column);
+                 presenter.checkWinner();
                     
                 });
                 
@@ -144,10 +155,19 @@ public class BoardGui extends Application{
         }
 	}
 	
+	public void putChip (int row, int column)
+	{
+
+		//loop through the whole grid and put into correct cell
+	}
+	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		
 		BorderPane root = new BorderPane();
+		
+		//FlowPane flowpane = new FlowPane();
+		//flowpane.getChildren().add(grid);
 
 		root.setCenter(grid);
 		root.setRight(showRightBoxGUI());

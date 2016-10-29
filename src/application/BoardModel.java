@@ -11,9 +11,24 @@ public class BoardModel {
 		this.winningMove = winningMove; 
 	}
 	
-	void putChip(Chip chip, int column)
+	int putChip(Chip chip, int column)
 	{
-
+		
+		
+		int  put = -1; //check if the column is full 
+		
+		for (int row =boardArray.length-1;row>=0; row--)
+		{
+			if(boardArray[row][column] == null){
+				boardArray[row][column] = chip; 
+				System.out.println("put chip at "+row+" "+column);
+				put = row; 
+				break; 
+			}	
+			
+		}
+		
+		return put; 
 	}
 	
 	int checkWinner()

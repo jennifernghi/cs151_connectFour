@@ -10,16 +10,14 @@ public class ConnectFour extends Application{
 		// TODO Auto-generated method stub
 		try{
 			
-		//presenter = new BoardPresenter(Integer.parseInt(args[0].trim()), Integer.parseInt(args[1].trim()));
-		//System.out.println(Integer.parseInt(args[0].trim()));
+		
 		arguments[0] = Integer.parseInt(args[0].trim());
 		arguments[1] = Integer.parseInt(args[1].trim());
 		launch(args);
-		//Application.launch(BoardGui.class,args);
 		}
 		catch (Exception e)
 		{
-			//System.out.println("Invalid argument type.");
+			System.out.println("Invalid argument type.");
 		}
 		
 	}

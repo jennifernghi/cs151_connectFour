@@ -50,6 +50,6 @@ public abstract class AbstractPlayer {
 	 * @return chip
 	 */
 	public Chip getChip() {
-		return this.chip;
+		return chip.clone();
 	}
 }

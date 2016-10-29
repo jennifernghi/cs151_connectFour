@@ -56,4 +56,9 @@ public class Chip {
 		return str;
 		
 	}
+	
+	public Chip clone()
+	{
+		return new Chip(getValue(), color);
+	}
 }
