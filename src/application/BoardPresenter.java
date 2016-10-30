@@ -1,10 +1,5 @@
 package application;
 
-import javafx.scene.control.Label;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
 
 public class BoardPresenter {
@@ -12,10 +7,10 @@ public class BoardPresenter {
 	BoardModel boardModel;
 	AbstractPlayer player1;
 	AbstractPlayer player2;
-	Integer turn = 1;
+	Integer turn;
 
 	public BoardPresenter(Integer size, Integer winningMove) {
-				
+		setTurn(1);
 		setBoardModel(new BoardModel(size, winningMove));
 			
 		setPlayer1(new Players(1, new Chip(1, Color.GREEN)));
@@ -45,6 +40,7 @@ public class BoardPresenter {
 	public AbstractPlayer getPlayer1() {
 		return this.player1;
 	}
+	
 	public void setPlayer2(AbstractPlayer player2) {
 		this.player2 = player2;
 	}
@@ -59,6 +55,10 @@ public class BoardPresenter {
 	
 	public Integer getTurn() {
 		return this.turn;
+	}
+	
+	public void setRow(int row) {
+		boardModel.setRow(row);
 	}
 	public void putChip(int column) {
 		//boardModel.putChip();
