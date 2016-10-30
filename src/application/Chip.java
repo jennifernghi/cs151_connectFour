@@ -47,6 +47,10 @@ public class Chip {
 	public Integer getValue(){
 		return this.value;
 	}
+	
+	public Paint getColor() {
+		return this.color;
+	}
 	/**
 	 * toString()
 	 * @return str - value of the chip
