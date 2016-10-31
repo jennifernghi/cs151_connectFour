@@ -57,6 +57,11 @@ public class Chip {
 		
 	}
 	
+	public Paint getColor()
+	{
+		return color;
+	}
+	
 	public Chip clone()
 	{
 		return new Chip(getValue(), color);

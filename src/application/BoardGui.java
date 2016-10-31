@@ -2,6 +2,8 @@ package application;
 
 
 
+import java.util.List;
+
 //import com.sun.prism.paint.Color;
 
 import javafx.application.Application;
@@ -20,6 +22,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 
 import javafx.stage.Stage;
@@ -33,13 +36,17 @@ public class BoardGui extends Application{
 	private GridPane grid;
 	private Button player1Button;
 	private Button player2Button;
+	private double chipWidth =50;
+	private double chipHeight =50;
+	private BorderPane root; 
 	
-	public BoardGui(BoardPresenter presenter, int size) {
+	public BoardGui(BoardPresenter presenter) {
 		//System.out.println("board gui");
 		this.presenter = presenter; 
 		presenter.setView(this);
 		
-		createGrid(size);
+		//createGrid(size);
+		
 	}
 	
 	public void setGridPane(GridPane grid) {
@@ -67,6 +74,14 @@ public class BoardGui extends Application{
 		this.player2Button = player2Button;
 	}
 	
+	public double getChipWidth(){
+		return this.chipWidth;
+	}
+	
+	public double getChipHeight(){
+		return this.chipHeight; 
+	}
+	
 	public VBox showRightBoxGUI(){
 		VBox rightBox = new VBox(10);
 		Label label = new Label("CONNECT FOUR");
@@ -78,16 +93,29 @@ public class BoardGui extends Application{
 		
 		player1Button.setDisable(false);
 		player2Button.setDisable(true);
-		rightBox.getChildren().addAll(label, player1Button, player2Button);
+		
+		Button clearButton = new Button("Clear");
+		clearButton.setOnMouseClicked(e-> {
+			clear();
+		});
+		
+		rightBox.getChildren().addAll(label, player1Button, player2Button, clearButton);
 		rightBox.setAlignment(Pos.TOP_CENTER);
 		return rightBox;
+	}
+	
+	public Rectangle rectangleChip(Paint color){
+		Rectangle rec = new Rectangle (getChipWidth()-1, getChipHeight()-1);
+		rec.setFill(color);
+		return rec; 
 	}
 	
 	public void promptWinner(String playerId) {
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setHeaderText("Game Over!");		
-		alert.setContentText(playerId + "won.");
-		alert.showAndWait();	
+		alert.setContentText("Player "+playerId + " won.");
+		alert.showAndWait();
+		clear();
 	}
 	
 	public void promptTie()
@@ -96,6 +124,7 @@ public class BoardGui extends Application{
 		alert.setHeaderText("Game Over!");		
 		alert.setContentText("It's a tie!");
 		alert.showAndWait();
+		clear();
 	}
 	
 	public void promptInvalidMove()
@@ -113,13 +142,13 @@ public class BoardGui extends Application{
 		
 		//add colums on the grid using numberOfColumns
         for(int i = 0; i < size; i++) {
-            ColumnConstraints column = new ColumnConstraints(50);
+        	ColumnConstraints column = new ColumnConstraints(getChipHeight());
             grid.getColumnConstraints().add(column);
             
         }
         //add rows on the grid using numberOfRow
         for(int i = 0; i < size; i++) {
-            RowConstraints row = new RowConstraints(50);
+        	RowConstraints row = new RowConstraints(getChipWidth());
             grid.getRowConstraints().add(row);
         }
      
@@ -158,16 +187,45 @@ public class BoardGui extends Application{
 	public void putChip (int row, int column)
 	{
 
-		//loop through the whole grid and put into correct cell
+		for (Node node: grid.getChildren())
+		{
+			if(GridPane.getColumnIndex(node) == column && GridPane.getRowIndex(node) == row)
+			{
+				Pane pane = (Pane) node;
+				if (presenter.getTurn() ==1){
+					player1Button.setDisable(true);
+					player2Button.setDisable(false);
+				pane.getChildren().add(rectangleChip(presenter.getPlayer1().getChip().getColor()));
+			
+				}else{
+					player1Button.setDisable(false);
+					player2Button.setDisable(true);
+				pane.getChildren().add(rectangleChip(presenter.getPlayer2().getChip().getColor()));
+				}
+				
+				//pane.setDisable(true);
+			}
+		}
+	}
+	
+	public void clear()
+	{
+		grid.getChildren().clear();
+		createGrid(presenter.getSize());
+		root.setCenter(grid); 
+	
+		
+		player1Button.setDisable(false);
+		player2Button.setDisable(true);
+		
+		presenter.clear();
 	}
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		
-		BorderPane root = new BorderPane();
-		
-		//FlowPane flowpane = new FlowPane();
-		//flowpane.getChildren().add(grid);
+		root = new BorderPane();
+		createGrid(presenter.getSize());
 
 		root.setCenter(grid);
 		root.setRight(showRightBoxGUI());

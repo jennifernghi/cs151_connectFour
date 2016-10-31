@@ -13,9 +13,12 @@ public class BoardPresenter {
 	AbstractPlayer player1;
 	AbstractPlayer player2;
 	Integer turn = 1;
+	Integer size; 
 
 	public BoardPresenter(Integer size, Integer winningMove) {
 
+		this.size = size; 
+		
 		setBoardModel(new BoardModel(size, winningMove));
 
 		setPlayer1(new Players(1, new Chip(1, Color.GREEN)));
@@ -26,6 +29,11 @@ public class BoardPresenter {
 	// attach view
 	public void setView(BoardGui view) {
 		this.view = view;
+	}
+	
+	public int getSize()
+	{
+		return size;
 	}
 
 	public BoardGui getView() {
@@ -68,28 +76,28 @@ public class BoardPresenter {
 		// boardModel.putChip();
 		int row;
 		
-		System.out.println("initial player "+getTurn());
+		//System.out.println("initial player "+getTurn());
 		
 		if (getTurn() == 1) {
-		row = boardModel.putChip(player1.getChip(), column);
-			if (row>-1) {
-				setTurn(2);
+			row = boardModel.putChip(player1.getChip(), column);
 			
+			if (row>-1) {
+				setTurn(2);	
 			}
 		} else {
 			row = boardModel.putChip(player2.getChip(), column);
 			if (row>-1) {
 				setTurn(1);
-				view.putChip(row, column);
 			}
+			
 		}
-		
+		view.putChip(row, column);
 
 		
 		if (row<=-1)
 			view.promptInvalidMove();
 		
-		System.out.println(getTurn()+" "+column + " " + row);
+		//System.out.println(getTurn()+" "+column + " " + row);
 	}
 	
 	public void checkWinner()
@@ -103,5 +111,12 @@ public class BoardPresenter {
 		else if (winner == -1)
 			view.promptTie(); // when the board is filled	
 	}
+	
+	public void clear()
+	{
+		setTurn(1);
+		boardModel.clear();
+	}
+	
 
 }

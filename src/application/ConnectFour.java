@@ -24,7 +24,7 @@ public class ConnectFour extends Application{
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		BoardGui app = new BoardGui(new BoardPresenter(arguments[0], arguments[1]), arguments[0]);
+		BoardGui app = new BoardGui(new BoardPresenter(arguments[0], arguments[1]));
 		app.start(primaryStage);
 		
 	}

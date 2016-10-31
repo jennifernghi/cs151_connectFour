@@ -9,7 +9,6 @@ public class Players extends AbstractPlayer {
 	 */
 	public Players(Integer playerId, Chip chip) {
 		super(playerId, chip);
-		System.out.println("player" + playerId);
 	}
 	/**
 	 * @return playerId - String
