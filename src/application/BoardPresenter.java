@@ -71,7 +71,7 @@ public class BoardPresenter {
 			setTurn(1); 
 		}
 		
-		int winner = boardModel.checkWinner();
+		int winner = boardModel.checkWinner(boardModel.getSize(), boardModel.getWinningMove());
 		
 		if (winner == 1)
 			view.promptWinner(""+player1.getPlayerId());
