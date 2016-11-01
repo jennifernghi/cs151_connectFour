@@ -1,7 +1,7 @@
 
 .game-grid{
     -fx-background-color: white ;
-   	-fx-padding:20 ;
+    -fx-padding: 20;
 }
 .game-grid-cell {
     -fx-background-color: black, white ;

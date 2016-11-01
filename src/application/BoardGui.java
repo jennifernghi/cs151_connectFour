@@ -14,11 +14,14 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -36,8 +39,8 @@ public class BoardGui extends Application{
 	private GridPane grid;
 	private Button player1Button;
 	private Button player2Button;
-	private double chipWidth =50;
-	private double chipHeight =50;
+	private double chipWidth =70;
+	private double chipHeight =70;
 	private BorderPane root; 
 	
 	public BoardGui(BoardPresenter presenter) {
@@ -106,8 +109,11 @@ public class BoardGui extends Application{
 	
 	public Rectangle rectangleChip(Paint color){
 		Rectangle rec = new Rectangle (getChipWidth()-1, getChipHeight()-1);
+		//Rectangle rec = new Rectangle();
+		//rec.xProperty().bind(grid.heightProperty());
+        //rec.yProperty().bind(grid.heightProperty());
 		rec.setFill(color);
-		return rec; 
+		return rec ; 
 	}
 	
 	public void promptWinner(String playerId) {
@@ -138,25 +144,32 @@ public class BoardGui extends Application{
 	public void createGrid(int size){
 		
 		grid = new GridPane();
+
 		grid.getStyleClass().add("game-grid");
 		
 		//add colums on the grid using numberOfColumns
         for(int i = 0; i < size; i++) {
-        	ColumnConstraints column = new ColumnConstraints(getChipHeight());
-            grid.getColumnConstraints().add(column);
+        	//ColumnConstraints column = new ColumnConstraints(getChipHeight());
+        	 ColumnConstraints col = new ColumnConstraints();
+             col.setHgrow(Priority.ALWAYS);
+        	grid.getColumnConstraints().add(col);
+        
             
         }
         //add rows on the grid using numberOfRow
         for(int i = 0; i < size; i++) {
-        	RowConstraints row = new RowConstraints(getChipWidth());
-            grid.getRowConstraints().add(row);
+        	//RowConstraints row = new RowConstraints(getChipWidth());
+        	RowConstraints row = new RowConstraints();
+        	row.setVgrow(Priority.ALWAYS);
+        	grid.getRowConstraints().add(row);
         }
-     
+     System.out.println(grid.getMinWidth());
         
      // add responsive cell onto the grid
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 Pane pane = new Pane();
+
                 int column= i;
           
                 //when the cell is clicked, add a rectangle with chosen color onto the cell
@@ -191,7 +204,7 @@ public class BoardGui extends Application{
 		{
 			if(GridPane.getColumnIndex(node) == column && GridPane.getRowIndex(node) == row)
 			{
-				Pane pane = (Pane) node;
+				AnchorPane pane = (AnchorPane) node;
 				if (presenter.getTurn() ==1){
 					player1Button.setDisable(true);
 					player2Button.setDisable(false);
@@ -224,17 +237,28 @@ public class BoardGui extends Application{
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		
-		root = new BorderPane();
 		createGrid(presenter.getSize());
+		root = new BorderPane();
+		
+		 
+		
+		//grid.prefHeightProperty().bind(root.heightProperty());
+        //grid.prefWidthProperty().bind(root.widthProperty());
 
 		root.setCenter(grid);
+	
 		root.setRight(showRightBoxGUI());
 		
 		Scene scene = new Scene(root, 700,700);
+		
+		
 		//link to the css file
+
 		scene.getStylesheets().add(this.getClass().getResource("game.css").toExternalForm());
 		primaryStage.setScene(scene);
+		primaryStage.sizeToScene();
 		primaryStage.setTitle("Connect 4");
+		
 		primaryStage.show();
 	}
 
