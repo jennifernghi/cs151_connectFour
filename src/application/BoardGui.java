@@ -204,7 +204,7 @@ public class BoardGui extends Application{
 		{
 			if(GridPane.getColumnIndex(node) == column && GridPane.getRowIndex(node) == row)
 			{
-				AnchorPane pane = (AnchorPane) node;
+				Pane pane = (Pane) node;
 				if (presenter.getTurn() ==1){
 					player1Button.setDisable(true);
 					player2Button.setDisable(false);
