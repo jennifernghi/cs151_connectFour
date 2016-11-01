@@ -48,13 +48,19 @@ public class BoardModel {
 			consecutiveChipValue = checkHorizontally(consecutiveChipValue, repeat);
 			// check diagonal left - to - right
 
+			consecutiveChipValue = checkDiagonalOnAndAboveDiagonalBottomLeftToRight(consecutiveChipValue, repeat);
+			
+			consecutiveChipValue = checkDiagonalBelowDiagonalBottomLeftToRight(consecutiveChipValue, repeat);
 			// check diagonal right - to - left
 			
+			consecutiveChipValue = checkDiagonalOnAndAboveDiagonalTopRightToLeft(consecutiveChipValue, repeat);
+			
+			consecutiveChipValue = checkDiagonalBelowDiagonalBottomRightToLeft(consecutiveChipValue, repeat);
 			return consecutiveChipValue;
 		}
 	}
 
-	public int checkVertically(int consecutiveChipValue, int repeat) {
+	private int checkVertically(int consecutiveChipValue, int repeat) {
 
 		for (int column = 0; column < boardArray.length; column++) {
 			for (int row = 1; row < boardArray.length; row++) {
@@ -76,7 +82,7 @@ public class BoardModel {
 
 	}
 
-	public int checkHorizontally(int consecutiveChipValue, int repeat) {
+	private int checkHorizontally(int consecutiveChipValue, int repeat) {
 		for (int row = 0; row < boardArray.length; row++) {
 			for (int column = 1; column < boardArray.length; column++) {
 				// compare with previous column
@@ -100,6 +106,102 @@ public class BoardModel {
 
 	}
 	
+	private int checkDiagonalOnAndAboveDiagonalBottomLeftToRight(int consecutiveChipValue, int repeat) {
+		for (int column = 0; column < boardArray.length; column++) {
+			for (int row = 1; row < boardArray.length; row++) {
+				// compare with previous diagonal value
+				if (row+ column < boardArray.length && boardArray[row][row+ column] != null && boardArray[row -1][(row + column) - 1] != null) {
+					if (boardArray[row][row+ column].getValue() == boardArray[row- 1][(row + column) - 1].getValue())
+						++repeat;
+					else
+						repeat = 1;
+
+					// Check if there are consecutive chip in a row that =
+					// winningMove.
+					if (repeat == winningMove) {
+						// Return color of the winner
+						consecutiveChipValue = boardArray[row][row + column].getValue();
+					}
+				} else
+					repeat = 1;
+			}
+		}
+		return consecutiveChipValue;
+		}
+		
+
+	private int checkDiagonalBelowDiagonalBottomLeftToRight(int consecutiveChipValue, int repeat) {
+		for (int row = 0; row < boardArray.length; row++) {
+			for (int column = 1; column < boardArray.length; column++) {
+				// compare with previous column
+				if (row + column < boardArray.length && row+column != column && boardArray[row+column][column] != null && boardArray[((row + column)-1)][column- 1] != null) {
+					if (boardArray[row+column][column].getValue() == boardArray[((row + column)-1)][column- 1].getValue())
+						++repeat;
+					else
+						repeat = 1;
+
+					// Check if there are consecutive chip in a row that =
+					// winningMove.
+					if (repeat == winningMove) {
+						// Return color of the winner
+						consecutiveChipValue = boardArray[row+column][column].getValue();
+					}
+				} else
+					repeat = 1;
+			}
+		}
+		return consecutiveChipValue;
+		}
+	private int checkDiagonalOnAndAboveDiagonalTopRightToLeft(int consecutiveChipValue, int repeat) {
+		for (int column = boardArray.length-1; column > 0; column--) {
+			for (int row = 1; row < boardArray.length; row++) {
+				// compare with previous diagonal value
+				if (column- row >= 0 && boardArray[row][column -row] != null && boardArray[row -1][(column-row) + 1] != null) {
+					if (boardArray[row][column -row].getValue() == boardArray[row -1][(column-row) + 1].getValue())
+						++repeat;
+					else
+						repeat = 1;
+
+					// Check if there are consecutive chip in a row that =
+					// winningMove.
+					if (repeat == winningMove) {
+						// Return color of the winner
+						consecutiveChipValue = boardArray[row][column -row].getValue();
+					}
+				} else
+					repeat = 1;
+			}
+		}
+		return consecutiveChipValue;
+		}
+	private int checkDiagonalBelowDiagonalBottomRightToLeft(int consecutiveChipValue, int repeat) {
+		int pivot = boardArray.length-1;
+		for (int row =1; row <boardArray.length; row++) {
+			for (int column = boardArray.length-2, i = row +1; column >= 0 && i <=pivot; column--, i++) {
+				if (boardArray[i][column] != null && boardArray[row][pivot] != null) {
+					
+					if (boardArray[i][column].getValue() == boardArray[row][pivot].getValue())
+					{
+						
+						++repeat;
+						
+					}
+					else
+					{
+						repeat = 1;
+					}
+					// Check if there are consecutive chip in a row that =
+					// winningMove.
+					if (repeat == winningMove) {
+						// Return color of the winner
+						consecutiveChipValue = boardArray[i][column].getValue();
+					}
+				} else
+					repeat = 1;
+			}
+		}
+		return consecutiveChipValue;
+		}
 	public void clear()
 	{
 		numOfChips = 0;
