@@ -11,13 +11,23 @@ public class ConnectFour extends Application{
 		try{
 			
 		
-		arguments[0] = Integer.parseInt(args[0].trim());
-		arguments[1] = Integer.parseInt(args[1].trim());
-		launch(args);
+			arguments[0] = Integer.parseInt(args[0].trim());
+			arguments[1] = Integer.parseInt(args[1].trim());
+			if(arguments[1]<arguments[0]){
+				launch(args);
+			}else
+			{
+				System.out.println("winner move must smaller than size");
+				System.exit(0);
+			}
+				
 		}
 		catch (Exception e)
 		{
-			System.out.println("Invalid argument type.");
+			System.out.println("Invalid argument type. check command line!");
+			System.out.println("java application.ConnectFour size winningmove");
+			System.out.println("or java -jar ConnectFour size winningmove");
+			System.exit(0);
 		}
 		
 	}
