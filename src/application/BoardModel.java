@@ -43,19 +43,17 @@ public class BoardModel {
 
 			// check vertically
 			consecutiveChipValue = checkVertically(consecutiveChipValue, repeat);
-
 			// check horizontally
 			consecutiveChipValue = checkHorizontally(consecutiveChipValue, repeat);
 			// check diagonal left - to - right
 
 			consecutiveChipValue = checkOnAndAboveDiagonalBottomRightToLeft(consecutiveChipValue, repeat);
-			
 			consecutiveChipValue = checkBelowDiagonalBottomRightToLeft(consecutiveChipValue, repeat);
-			// check diagonal right - to - left
-			
+//			// check diagonal right - to - left
+
 			consecutiveChipValue = checkOnAndAboveDiagonalBottomLeftToRight(consecutiveChipValue, repeat);
-			
 			consecutiveChipValue = checkBelowDiagonalBottomLeftToRight(consecutiveChipValue, repeat);
+			
 			return consecutiveChipValue;
 		}
 	}
@@ -74,9 +72,9 @@ public class BoardModel {
 						// Return color of the winner
 						consecutiveChipValue = boardArray[row][column].getValue();
 					}
-				} else
-					repeat = 1;
+				} 
 			}
+			repeat = 1; 
 		}
 		return consecutiveChipValue;
 
@@ -87,6 +85,7 @@ public class BoardModel {
 			for (int column = 1; column < boardArray.length; column++) {
 				// compare with previous column
 				if (boardArray[row][column] != null && boardArray[row][column - 1] != null) {
+					//System.out.println(row+""+column +" "+row+""+(column - 1)+" "+repeat );
 					if (boardArray[row][column].getValue() == boardArray[row][column - 1].getValue())
 						++repeat;
 					else
@@ -98,9 +97,9 @@ public class BoardModel {
 						// Return color of the winner
 						consecutiveChipValue = boardArray[row][column].getValue();
 					}
-				} else
-					repeat = 1;
+				} 
 			}
+			repeat = 1;
 		}
 		return consecutiveChipValue;
 
@@ -122,9 +121,9 @@ public class BoardModel {
 						// Return color of the winner
 						consecutiveChipValue = boardArray[row][row + column].getValue();
 					}
-				} else
-					repeat = 1;
+				} 
 			}
+			repeat =1;
 		}
 		return consecutiveChipValue;
 		}
@@ -146,12 +145,13 @@ public class BoardModel {
 						// Return color of the winner
 						consecutiveChipValue = boardArray[row+column][column].getValue();
 					}
-				} else
-					repeat = 1;
+				} 
 			}
+			repeat =1; 
 		}
 		return consecutiveChipValue;
 		}
+	
 	private int checkOnAndAboveDiagonalBottomLeftToRight(int consecutiveChipValue, int repeat) {
 		for (int column = boardArray.length-1; column > 0; column--) {
 			for (int row = 1; row < boardArray.length; row++) {
@@ -168,17 +168,18 @@ public class BoardModel {
 						// Return color of the winner
 						consecutiveChipValue = boardArray[row][column -row].getValue();
 					}
-				} else
-					repeat = 1;
+				} 
 			}
+			repeat =1; 
 		}
 		return consecutiveChipValue;
 		}
+	
 	private int checkBelowDiagonalBottomLeftToRight(int consecutiveChipValue, int repeat) {
 		for (int row =0; row <boardArray.length; row++) {
 			for (int column = boardArray.length-1, i = row +1; column >= 0 && i <=boardArray.length-1; column--, i++) {
-				if (boardArray[i][column] != null  && i -1 >=0 && column +1 <boardArray.length && boardArray[i-1][column+1] !=null) {
-					
+				if (boardArray[i][column] != null  && i -1 >=0 && column +1 <boardArray.length && boardArray[i-1][column+1] !=null) 
+				{	
 					if (boardArray[i][column].getValue() == boardArray[i-1][column+1].getValue())
 					{
 						++repeat;	
@@ -193,12 +194,14 @@ public class BoardModel {
 						// Return color of the winner
 						consecutiveChipValue = boardArray[i][column].getValue();
 					}
-				} else
-					repeat = 1;
+				} //else
+					//repeat = 1;
 			}
+			repeat =1; 
 		}
 		return consecutiveChipValue;
 		}
+	
 	public void clear()
 	{
 		numOfChips = 0;
