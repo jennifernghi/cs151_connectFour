@@ -8,12 +8,14 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
 
 public class BoardPresenter {
-	BoardGui view;
-	BoardModel boardModel;
-	AbstractPlayer player1;
-	AbstractPlayer player2;
-	Integer turn = 1;
-	Integer size; 
+	private BoardGui view;
+	private BoardModel boardModel;
+	private AbstractPlayer player1;
+	private AbstractPlayer player2;
+	private Integer turn = 1;
+	private Integer size; 
+	private Integer player1Win;
+	private Integer player2Win; 
 
 	public BoardPresenter(Integer size, Integer winningMove) {
 
@@ -21,8 +23,11 @@ public class BoardPresenter {
 		
 		setBoardModel(new BoardModel(size, winningMove));
 
-		setPlayer1(new Players(1, new Chip(1, Color.GREEN)));
-		setPlayer2(new Players(2, new Chip(2, Color.RED)));
+		player1 = new Players(1, new Chip(1, Color.GREEN));
+		player2 = new Players(2, new Chip(2, Color.RED));
+		
+		player1Win =0;
+		player2Win = 0;
 
 	}
 
@@ -48,36 +53,33 @@ public class BoardPresenter {
 		return this.boardModel;
 	}
 
-	public void setPlayer1(AbstractPlayer player1) {
-		this.player1 = player1;
-	}
-
 	public AbstractPlayer getPlayer1() {
 		return this.player1;
-	}
-
-	public void setPlayer2(AbstractPlayer player2) {
-		this.player2 = player2;
 	}
 
 	public AbstractPlayer getPlayer2() {
 		return this.player2;
 	}
 
-	public void setTurn(Integer turn) {
+	private void setTurn(Integer turn) {
 		this.turn = turn;
 	}
 
 	public Integer getTurn() {
 		return this.turn;
 	}
+	
+	public Integer getPlayer1Win(){
+		return player1Win;
+	}
+	
+	public Integer getPlayer2Win(){
+		return player2Win;
+	}
 
 	public void putChip(int column) {
-		// boardModel.putChip();
 		int row;
-		
-		//System.out.println("initial player "+getTurn());
-		
+
 		if (getTurn() == 1) {
 			row = boardModel.putChip(player1.getChip(), column);
 			
@@ -96,20 +98,29 @@ public class BoardPresenter {
 		
 		if (row<=-1)
 			view.promptInvalidMove();
-		
-		//System.out.println(getTurn()+" "+column + " " + row);
+
 	}
 	
 	public void checkWinner()
 	{
 		int winner = boardModel.checkWinner();
 
-		if (winner == 1)
+		if (winner == 1){
 			view.promptWinner("" + player1.getPlayerId());
-		else if (winner == 2)
+			view.updatePlayer1Win(++player1Win);
+		}
+		else if (winner == 2){
 			view.promptWinner("" + player2.getPlayerId());
+			view.updatePlayer2Win(++player2Win);
+		}
 		else if (winner == -1)
 			view.promptTie(); // when the board is filled	
+	}
+	
+	public void resetWins()
+	{
+		player1Win = 0;
+		player2Win = 0; 
 	}
 	
 	public void clear()

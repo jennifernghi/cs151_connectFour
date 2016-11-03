@@ -14,14 +14,13 @@ public class BoardModel {
 		this.winningMove = winningMove;
 	}
 
-	int putChip(Chip chip, int column) {
+	public int putChip(Chip chip, int column) {
 
 		int put = -1; // check if the column is full
 
 		for (int row = boardArray.length - 1; row >= 0; row--) {
 			if (boardArray[row][column] == null) {
 				boardArray[row][column] = chip;
-				//System.out.println("put chip at " + row + " " + column);
 				numOfChips++;
 				put = row;
 				break;
@@ -32,7 +31,7 @@ public class BoardModel {
 		return put;
 	}
 
-	int checkWinner() {
+	public int checkWinner() {
 
 		//check if it is tie
 		if (numOfChips == spaces) 
@@ -181,15 +180,9 @@ public class BoardModel {
 				if (boardArray[i][column] != null && boardArray[row][pivot] != null) {
 					
 					if (boardArray[i][column].getValue() == boardArray[row][pivot].getValue())
-					{
-						
 						++repeat;
-						
-					}
 					else
-					{
 						repeat = 1;
-					}
 					// Check if there are consecutive chip in a row that =
 					// winningMove.
 					if (repeat == winningMove) {
