@@ -10,14 +10,19 @@ public class ConnectFour extends Application{
 		// TODO Auto-generated method stub
 		try{
 			
-		
-			arguments[0] = Integer.parseInt(args[0].trim());
-			arguments[1] = Integer.parseInt(args[1].trim());
-			if(arguments[1]<arguments[0]){
-				launch(args);
-			}else
+			if((args[0].trim().charAt(0)>= 48 && args[0].trim().charAt(0) <=57) && (args[1].trim().charAt(0)>= 48 && args[1].trim().charAt(0) <=57))
 			{
-				System.out.println("winner move must smaller than size");
+				arguments[0] = Integer.parseInt(args[0].trim());
+				arguments[1] = Integer.parseInt(args[1].trim());
+				if(arguments[1]<arguments[0]){
+					launch(args);
+				}else
+				{
+					System.out.println("winner move must smaller than size");
+					System.exit(0);
+				}
+			}else{
+				System.out.println("size and winning move must be an integer");
 				System.exit(0);
 			}
 				
