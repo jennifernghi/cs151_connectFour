@@ -13,7 +13,7 @@ public class ConnectFour extends Application{
 		
 			arguments[0] = Integer.parseInt(args[0].trim());
 			arguments[1] = Integer.parseInt(args[1].trim());
-			if(arguments[1]<arguments[0]){
+			if(arguments[1]<=arguments[0]){
 				launch(args);
 			}else
 			{

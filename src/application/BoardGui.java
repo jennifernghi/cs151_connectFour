@@ -14,6 +14,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
@@ -23,9 +24,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
 import javafx.stage.Stage;
@@ -39,16 +42,15 @@ public class BoardGui extends Application{
 	private GridPane grid;
 	private Button player1Button;
 	private Button player2Button;
-	private double chipWidth =70;
-	private double chipHeight =70;
+	private double chipRadius = 25; 
+	private double chipRelocate =5;
+	
+	//private Circle circle; 
 	private BorderPane root; 
 	
 	public BoardGui(BoardPresenter presenter) {
-		//System.out.println("board gui");
 		this.presenter = presenter; 
 		presenter.setView(this);
-		
-		//createGrid(size);
 		
 	}
 	
@@ -64,35 +66,33 @@ public class BoardGui extends Application{
 	public BoardPresenter getPresenter() {
 		return this.presenter;
 	}
-	public Button getPlayer1Button() {
-		return this.player1Button;
-	}
-	public void setPlayer1Button(Button player1Button) {
-		this.player1Button = player1Button;
-	}
-	public Button getPlayer2Button() {
-		return this.player2Button;
-	}
-	public void setPlayer2Button(Button player2Button) {
-		this.player2Button = player2Button;
+	
+	public double getChipRadius(){
+		return this.chipRadius;
 	}
 	
-	public double getChipWidth(){
-		return this.chipWidth;
-	}
-	
-	public double getChipHeight(){
-		return this.chipHeight; 
-	}
 	
 	public VBox showRightBoxGUI(){
 		VBox rightBox = new VBox(10);
 		Label label = new Label("CONNECT FOUR");
-		setPlayer1Button(new Button("Player "+presenter.getPlayer1().toString()));
-		setPlayer2Button(new Button("Player "+presenter.getPlayer2().toString()));
+		
+		player1Button = new Button("Player "+presenter.getPlayer1().toString());
+		player2Button = new Button("Player "+presenter.getPlayer2().toString());
 		
 		player1Button.setMinWidth(200);
 		player2Button.setMinWidth(200);
+		
+		DropShadow shadow = new DropShadow();
+		
+		shadow.setColor(Color.GREEN);
+		player1Button.setEffect(shadow);
+		player1Button.setTextFill(Color.GREEN);
+		
+		
+		DropShadow shadow2 = new DropShadow();
+		shadow2.setColor(Color.RED);
+		player2Button.setEffect(shadow2);
+		player2Button.setTextFill(Color.RED);
 		
 		player1Button.setDisable(false);
 		player2Button.setDisable(true);
@@ -107,13 +107,14 @@ public class BoardGui extends Application{
 		return rightBox;
 	}
 	
-	public Rectangle rectangleChip(Paint color){
-		Rectangle rec = new Rectangle (getChipWidth()-1, getChipHeight()-1);
-		//Rectangle rec = new Rectangle();
-		//rec.xProperty().bind(grid.heightProperty());
-        //rec.yProperty().bind(grid.heightProperty());
-		rec.setFill(color);
-		return rec ; 
+	public Circle circleChip(Paint color){
+	
+		Circle cir = new Circle(getChipRadius());
+		cir.setFill(color);
+		
+		
+		
+		return cir ; 
 	}
 	
 	public void promptWinner(String playerId) {
@@ -149,26 +150,26 @@ public class BoardGui extends Application{
 		
 		//add colums on the grid using numberOfColumns
         for(int i = 0; i < size; i++) {
-        	//ColumnConstraints column = new ColumnConstraints(getChipHeight());
-        	 ColumnConstraints col = new ColumnConstraints();
-             col.setHgrow(Priority.ALWAYS);
-        	grid.getColumnConstraints().add(col);
+        	ColumnConstraints column = new ColumnConstraints(60);
+        	 //ColumnConstraints col = new ColumnConstraints();
+             //col.setHgrow(Priority.ALWAYS);
+        	grid.getColumnConstraints().add(column);
         
             
         }
         //add rows on the grid using numberOfRow
         for(int i = 0; i < size; i++) {
-        	//RowConstraints row = new RowConstraints(getChipWidth());
-        	RowConstraints row = new RowConstraints();
-        	row.setVgrow(Priority.ALWAYS);
+        	RowConstraints row = new RowConstraints(60);
+        	//RowConstraints row = new RowConstraints();
+        	//row.setVgrow(Priority.ALWAYS);
         	grid.getRowConstraints().add(row);
         }
-     System.out.println(grid.getMinWidth());
+     //System.out.println(grid.getMinWidth());
         
      // add responsive cell onto the grid
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                Pane pane = new Pane();
+                StackPane pane = new StackPane();
 
                 int column= i;
           
@@ -188,7 +189,13 @@ public class BoardGui extends Application{
                 if (j == 0) {
                     pane.getStyleClass().add("first-row");
                 }
-            	
+                
+                Circle circle = new Circle();
+                circle.setRadius(25.0);
+//                circle.relocate(5, 5);
+             circle.setFill(Color.WHITE);
+             pane.getChildren().add(circle);
+             pane.setAlignment(circle,Pos.CENTER);
             	
                 //add cell to the grid
                 grid.add(pane, i, j);
@@ -206,14 +213,14 @@ public class BoardGui extends Application{
 			{
 				Pane pane = (Pane) node;
 				if (presenter.getTurn() ==1){
-					player1Button.setDisable(true);
-					player2Button.setDisable(false);
-				pane.getChildren().add(rectangleChip(presenter.getPlayer1().getChip().getColor()));
-			
-				}else{
 					player1Button.setDisable(false);
 					player2Button.setDisable(true);
-				pane.getChildren().add(rectangleChip(presenter.getPlayer2().getChip().getColor()));
+				pane.getChildren().add(circleChip(presenter.getPlayer2().getChip().getColor()));
+			
+				}else{
+					player1Button.setDisable(true);
+					player2Button.setDisable(false);
+				pane.getChildren().add(circleChip(presenter.getPlayer1().getChip().getColor()));
 				}
 				
 				//pane.setDisable(true);
@@ -239,17 +246,12 @@ public class BoardGui extends Application{
 		
 		createGrid(presenter.getSize());
 		root = new BorderPane();
-		
-		 
-		
-		//grid.prefHeightProperty().bind(root.heightProperty());
-        //grid.prefWidthProperty().bind(root.widthProperty());
 
 		root.setCenter(grid);
 	
 		root.setRight(showRightBoxGUI());
 		
-		Scene scene = new Scene(root, 700,700);
+		Scene scene = new Scene(root, 850,700);
 		
 		
 		//link to the css file

@@ -4,7 +4,7 @@
     -fx-padding: 20;
 }
 .game-grid-cell {
-    -fx-background-color: black, white ;
+    -fx-background-color: black, black ;
     -fx-background-insets: 0, 0 1 1 0 ;
 }
 .game-grid-cell.first-row {
