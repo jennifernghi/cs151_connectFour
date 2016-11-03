@@ -1,4 +1,3 @@
-package application;
 
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -56,12 +55,18 @@ public class Chip {
 		return str;
 		
 	}
-	
+	/**
+	 * get color of the chip
+	 * @return color
+	 */
 	public Paint getColor()
 	{
 		return color;
 	}
-	
+	/**
+	 * return chip with same color and same value
+	 * @return Chip
+	 */
 	public Chip clone()
 	{
 		return new Chip(getValue(), color);
