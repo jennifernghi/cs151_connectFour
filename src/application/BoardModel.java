@@ -48,14 +48,14 @@ public class BoardModel {
 			consecutiveChipValue = checkHorizontally(consecutiveChipValue, repeat);
 			// check diagonal left - to - right
 
-			consecutiveChipValue = checkDiagonalOnAndAboveDiagonalBottomRightToLeft(consecutiveChipValue, repeat);
+			consecutiveChipValue = checkOnAndAboveDiagonalBottomRightToLeft(consecutiveChipValue, repeat);
 			
-			consecutiveChipValue = checkDiagonalBelowDiagonalBottomRightToLeft(consecutiveChipValue, repeat);
+			consecutiveChipValue = checkBelowDiagonalBottomRightToLeft(consecutiveChipValue, repeat);
 			// check diagonal right - to - left
 			
-			consecutiveChipValue = checkDiagonalOnAndAboveDiagonalBottomLeftToRight(consecutiveChipValue, repeat);
+			consecutiveChipValue = checkOnAndAboveDiagonalBottomLeftToRight(consecutiveChipValue, repeat);
 			
-			consecutiveChipValue = checkDiagonalBelowDiagonalBottomLeftToRight(consecutiveChipValue, repeat);
+			consecutiveChipValue = checkBelowDiagonalBottomLeftToRight(consecutiveChipValue, repeat);
 			return consecutiveChipValue;
 		}
 	}
@@ -106,7 +106,7 @@ public class BoardModel {
 
 	}
 	
-	private int checkDiagonalOnAndAboveDiagonalBottomRightToLeft(int consecutiveChipValue, int repeat) {
+	private int checkOnAndAboveDiagonalBottomRightToLeft(int consecutiveChipValue, int repeat) {
 		for (int column = 0; column < boardArray.length; column++) {
 			for (int row = 1; row < boardArray.length; row++) {
 				// compare with previous diagonal value
@@ -130,7 +130,7 @@ public class BoardModel {
 		}
 		
 
-	private int checkDiagonalBelowDiagonalBottomRightToLeft(int consecutiveChipValue, int repeat) {
+	private int checkBelowDiagonalBottomRightToLeft(int consecutiveChipValue, int repeat) {
 		for (int row = 0; row < boardArray.length; row++) {
 			for (int column = 1; column < boardArray.length; column++) {
 				// compare with previous column
@@ -152,7 +152,7 @@ public class BoardModel {
 		}
 		return consecutiveChipValue;
 		}
-	private int checkDiagonalOnAndAboveDiagonalBottomLeftToRight(int consecutiveChipValue, int repeat) {
+	private int checkOnAndAboveDiagonalBottomLeftToRight(int consecutiveChipValue, int repeat) {
 		for (int column = boardArray.length-1; column > 0; column--) {
 			for (int row = 1; row < boardArray.length; row++) {
 				// compare with previous diagonal value
@@ -174,13 +174,12 @@ public class BoardModel {
 		}
 		return consecutiveChipValue;
 		}
-	private int checkDiagonalBelowDiagonalBottomLeftToRight(int consecutiveChipValue, int repeat) {
-		int pivot = boardArray.length-1;
-		for (int row =1; row <boardArray.length; row++) {
-			for (int column = boardArray.length-2, i = row +1; column >= 0 && i <=pivot; column--, i++) {
-				if (boardArray[i][column] != null && boardArray[row][pivot] != null) {
+	private int checkBelowDiagonalBottomLeftToRight(int consecutiveChipValue, int repeat) {
+		for (int row =1; row <=boardArray.length-2; row++) {
+			for (int column = boardArray.length-2, i = row +1; column >= 0 && i <=boardArray.length-1; column--, i++) {
+				if (boardArray[i][column] != null  && i -1 >=0 && column +1 <boardArray.length && boardArray[i-1][column+1] !=null) {
 					
-					if (boardArray[i][column].getValue() == boardArray[row][pivot].getValue())
+					if (boardArray[i][column].getValue() == boardArray[i-1][column+1].getValue())
 					{
 						
 						++repeat;
